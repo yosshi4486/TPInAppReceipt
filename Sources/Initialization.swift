@@ -15,7 +15,7 @@ public extension InAppReceipt
     ///
     /// - Returns: 'InAppReceipt' instance
     /// - throws: An error in the InAppReceipt domain, if `InAppReceipt` cannot be created.
-    static func receipt(from data: Data, environment: IAREnvironment = .production) throws -> InAppReceipt
+    static func receipt(from data: Data, environment: IAREnvironment) throws -> InAppReceipt
     {
         return try InAppReceipt(receiptData: data, environment: environment)
     }
@@ -24,7 +24,7 @@ public extension InAppReceipt
     ///
     /// - Returns: 'InAppReceipt' instance
     /// - throws: An error in the InAppReceipt domain, if `InAppReceipt` cannot be created.
-    static func localReceipt(environment: IAREnvironment = .production) throws -> InAppReceipt
+    static func localReceipt(environment: IAREnvironment) throws -> InAppReceipt
     {
         let data = try Bundle.main.appStoreReceiptData()
         return try InAppReceipt.receipt(from: data, environment: environment)
