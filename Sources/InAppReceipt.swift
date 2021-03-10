@@ -46,6 +46,9 @@ public class InAppReceipt
     /// Payload of the receipt.
     /// Payload object contains all meta information.
 	internal var payload: InAppReceiptPayload { receipt.payload }
+
+    /// The environment of the receipt.
+    internal var environment: IAREnvironment
     
     /// root certificate path, used to check signature
     /// added for testing purpose , as unit test can't read main bundle
@@ -57,17 +60,21 @@ public class InAppReceipt
     /// Initialize a `InAppReceipt` with asn1 payload
     ///
     /// - parameter receiptData: `Data` object that represents receipt
-	public init(receiptData: Data, rootCertPath: String? = nil) throws
+    public init(receiptData: Data, environment: IAREnvironment, rootCertPath: String? = nil) throws
 	{
 		self.receipt = try _InAppReceipt(rawData: receiptData)
 		self.rawData = receiptData
-		
-		#if DEBUG
-		let certificateName = "StoreKitTestCertificate"
-		#else
-		let certificateName = "AppleIncRootCertificate"
-		#endif
-		
+        self.environment = environment
+
+        let certificateName: String
+        switch environment
+        {
+        case .storeKitConfiguration:
+            certificateName = "StoreKitTestCertificate"
+        case .production:
+            certificateName = "AppleIncRootCertificate"
+        }
+
 		self.rootCertificatePath = rootCertPath ?? Bundle.lookUp(forResource: certificateName, ofType: "cer")
     }
 }

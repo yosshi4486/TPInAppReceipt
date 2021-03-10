@@ -12,7 +12,7 @@ final class TPInAppReceiptTests: XCTestCase {
 	func testNewReceipt()
 	{
 		self.measure {
-			let r = try! InAppReceipt(receiptData: watchReceipt)
+            let r = try! InAppReceipt(receiptData: watchReceipt, environment: .production)
 			//XCTAssert(r.appVersion == 1)
 		}
 		
@@ -21,7 +21,7 @@ final class TPInAppReceiptTests: XCTestCase {
 	func testLegacyReceipt()
 	{
 		self.measure {
-			let r = try! InAppReceipt(receiptData: legacyReceipt)
+            let r = try! InAppReceipt(receiptData: legacyReceipt, environment: .production)
 		}
 		
 	}

@@ -79,7 +79,13 @@ Usage
 ```swift
 do {
   /// Initialize receipt
-  let receipt = try InAppReceipt.localReceipt() 
+  let receipt: InAppReceipt
+  
+  #if DEBUG 
+  receipt = try InAppReceipt.localReceipt(environment: .storeKitConfiguration) 
+  #else 
+  receipt = try InAppReceipt.localReceipt(environment: .production) 
+  #endif
   
   // let receiptData: Data = ...
   // let receipt = try InAppReceipt.receipt(from: receiptData)
@@ -114,7 +120,13 @@ InAppReceipt.refresh { (error) in
 let base64Receipt = receipt.base64
   
 /// Initialize receipt
-let receipt = try! InAppReceipt.localReceipt() 
+let receipt: InAppReceipt
+
+#if DEBUG 
+receipt = try! InAppReceipt.localReceipt(environment: .storeKitConfiguration) 
+#else 
+receipt = try! InAppReceipt.localReceipt(environment: .production) 
+#endif
 
 /// Check whether receipt contains any purchases
 let hasPurchases = receipt.hasPurchases
