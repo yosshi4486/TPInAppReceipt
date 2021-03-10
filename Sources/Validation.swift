@@ -89,12 +89,14 @@ public extension InAppReceipt
         // only check certificate chain of trust and signature validity after these version
         if #available(OSX 10.12, iOS 10.0, tvOS 10.0, watchOS 5.0, *)
 		{
-			#if DEBUG
-			try checkSignatureValidity()
-			#else
-			try checkChainOfTrust()
-			try checkSignatureValidity()
-			#endif
+            switch environment
+            {
+            case .storeKitConfiguration:
+                try checkSignatureValidity()
+            case .production:
+                try checkChainOfTrust()
+                try checkSignatureValidity()
+            }
         }
     }
     
